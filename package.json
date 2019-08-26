@@ -9,7 +9,6 @@
   },
   "scripts": {
     "start": "nodemon ./server/index.js",
-    "build": "webpack --mode development --watch",
     "seed": "node ./db/index.js"
   },
   "dependencies": {
