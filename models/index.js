@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize('mysql://root@localhost:3306/airbnb');
 const Model = Sequelize.Model;
 const mysql = require('mysql2');
+
+
 class Review extends Sequelize.Model { }
 Review.init({
   // attributes

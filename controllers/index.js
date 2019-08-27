@@ -1,5 +1,6 @@
-const Review = require('../db').Review;
-//all routes to db: ROUTER 
+const Review = require('../models').Review;
+//ROUTER: DB ==> SERVER
+
 module.exports = {
   Review: {
     get: (req, res) =>  {
