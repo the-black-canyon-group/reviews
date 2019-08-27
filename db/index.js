@@ -1,80 +1,71 @@
 const Sequelize = require('sequelize');
-const Model = Sequelize.Model;
-const mysql = require('mysql2');
 const faker = require('faker');
-//CONNECTION TO DB: NEW INSTANCE OF SEQUELIZE
+const Review = require('../models').Review;
 const sequelize = new Sequelize('mysql://root@localhost:3306/airbnb');
 
 
-class Review extends Sequelize.Model {}
-Review.init({
-  // attributes
-  reviewer: {
-    type: Sequelize.TEXT,
-    allowNull: false
-  },
-  profile_picture:Sequelize.STRING,
-  loacalized_date: Sequelize.STRING,
-  review: Sequelize.TEXT,
-  accuracy: Sequelize.INTEGER,
-  communication: Sequelize.INTEGER,
-  cleanliness: Sequelize.INTEGER,
-  location: Sequelize.INTEGER,
-  checkin: Sequelize.INTEGER,
-  value: Sequelize.INTEGER
-}, {sequelize});
+const generateResponse = () => {
+  return ({
+    first_name: faker.name.firstName(),
+    profile_picture: faker.image.avatar(),
+    localized_date: new Date(faker.date.past()),
+    review: faker.lorem.text(),
+    accuracy: ((faker.random.number() % 5) + 1.0),
+    communication: ((faker.random.number() % 5) + 1.0),
+    cleanliness: ((faker.random.number() % 5) + 1.0),
+    location: ((faker.random.number() % 5) + 1.0),
+    checkin: ((faker.random.number() % 5) + 1.0),
+    value: ((faker.random.number() % 5) + 1.0),
+    response_first_name: 'Micheal',
+    response_profile_picture: 'https://s3.amazonaws.com/uifaces/faces/twitter/bowbrick/128.jpg',
+    response_comment: faker.lorem.text(),
+    response_localized_date: new Date(faker.date.recent())
+  })
+};
+
+const generateReview = () => {
+  return({
+    first_name: faker.name.firstName(),
+    profile_picture: faker.image.avatar(),
+    localized_date: new Date(faker.date.past()),
+    review: faker.lorem.text(),
+    accuracy: ((faker.random.number() % 5) + 1.0),
+    communication: ((faker.random.number() % 5) + 1.0),
+    cleanliness: ((faker.random.number() % 5) + 1.0),
+    location: ((faker.random.number() % 5) + 1.0),
+    checkin: ((faker.random.number() % 5) + 1.0),
+    value: ((faker.random.number() % 5) + 1.0)
+  })
+};
 
 
-class Host extends Sequelize.Model { }
-Host.init({
-    firstName: Sequelize.TEXT,
-    comment: Sequelize.TEXT,
-    profile_picture: Sequelize.STRING,
-    loacalized_date: Sequelize.TEXT,
-    review_id: {
-      type: Sequelize.INTEGER,
-      references: 'Review',
-      referencesKey: 'id'
-    },
-}, {sequelize});
-
-
-//BUILD ASSOCIATIONS
-Review.belongsTo(Host);
-Host.hasMany(Reviews);
-
-
-
-
-
-
-// //SYNC EACH TABLE TO DATABASE
 Review.sync({ force: true })
-  .then(() => {
-    // for (var i = 0; i < 100; i += 1) {
-    //   generateReview()
-    // }
-  })
-  .catch((err) => {
-    console.log(err)
-  });
+.then (() => {
+  Review.findAll()
+    .then((reviews) => {
+      // REVIEWS W/O RESPONSES
+      if (reviews.length === 0) {
+        for (var i = 0; i < 50; i += 1) {
+          const review = generateReview()
+          // review.response = generateResponse()
+          Review.create(review)
+        }
+
+        // REVIEWS W/ RESPONSES
+        for (var i = 0; i < 50; i += 1) {
+          const review = generateResponse()
+          Review.create(review)
+        }
+      }
+
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+})
 
 
-Host.sync({ force: true })
-  .then(() => {
-    // for (var j = 0; j < 20; j += 1) {
-    //   generateResponse()
-    // }
-  })
-  .catch((err) => {
-    console.log(err)
-  });
 
-// EXPORT EACH TABLE
-module.exports = {
-  Review: Model.Review,
-  Host: Model.Host
-}
 
 
 

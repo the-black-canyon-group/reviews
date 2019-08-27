@@ -1,6 +1,7 @@
-const express = require('express')
-const server = express()
+const express = require('express');
+const server = express();
 const port = 3001
+const Review = require('../db').Review;
 
 
 server.get('/reviews', (req, res) => {

@@ -1,18 +1,16 @@
-// const db = require('../db');
+const Review = require('../db').Review;
+//all routes to db: ROUTER 
+module.exports = {
+  Review: {
+    get: (req, res) =>  {
+      Review.findAll()
+      .then(function (reviews) {
+        res.json(reviews)
+      });
+    }
+  };
 
-
-
-// module.exports = {
-//   Review: {
-//     get: (req, res) =>  {
-//       db.Review.findAll()
-//       .then(function (reviews) {
-//         res.json(reviews)
-//       });
-//     }
-//   };
-
-// };
+};
 
 //find one where text ===> Searched item
 
