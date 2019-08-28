@@ -4,7 +4,7 @@ const Review = require('../models').Review;
 const sequelize = new Sequelize('mysql://root@localhost:3306/airbnb');
 
 
-const generateResponse = () => {
+const generateRespnseReviews = () => {
   return ({
     first_name: faker.name.firstName(),
     profile_picture: faker.image.avatar(),
@@ -53,7 +53,7 @@ Review.sync({ force: true })
 
         // REVIEWS W/ RESPONSES
         for (var i = 0; i < 50; i += 1) {
-          const review = generateResponse()
+          const review = generateRespnseReviews()
           Review.create(review)
         }
       }
